@@ -1,5 +1,6 @@
 <?php
 $playNowVideo = $video;
+$nextSources = getSources($autoPlayVideo['filename'], true);
 $transformation = "{rotate:" . $video['rotation'] . ", zoom: " . $video['zoom'] . "}";
 if ($video['rotation'] === "90" || $video['rotation'] === "270") {
     $aspectRatio = "9:16";
@@ -122,7 +123,8 @@ if ($config->getAutoplay()) {
     if (!empty($autoPlayVideo)) {
         ?>
                         else if (Cookies.get('autoplay') && Cookies.get('autoplay') !== 'false') {
-                            document.location = '<?php echo $autoPlayVideo['url']; ?>';
+                            changeVideoSrc(player, <?php echo json_encode($nextSources); ?>);
+                            //document.location = '<?php echo $autoPlayVideo['url']; ?>';
                         }
         <?php
     }
@@ -149,7 +151,8 @@ if ($config->getAutoplay()) {
     if (!empty($autoPlayVideo)) {
         ?>
                         if (Cookies.get('autoplay') && Cookies.get('autoplay') !== 'false') {
-                            document.location = '<?php echo $autoPlayVideo['url']; ?>';
+                            changeVideoSrc(player, <?php echo json_encode($nextSources); ?>);
+                            //document.location = '<?php echo $autoPlayVideo['url']; ?>';
                         }
         <?php
     }
