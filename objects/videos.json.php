@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 require_once '../videos/configuration.php';
 require_once 'video.php';
 require_once $global['systemRootPath'] . 'objects/functions.php';
@@ -7,8 +8,21 @@ $showOnlyLoggedUserVideos = true;
 if (User::isAdmin()) {
     $showOnlyLoggedUserVideos = false;
 }
+if(!empty($_GET['videoid'])){
+    
+    // @TODO check for admin/user-rights like downer
+    $videos = array(Video::getVideo($_GET['videoid']));
+    $total = 1;
+    if(empty($_POST['current'])){
+        $_POST['current']=0;
+    }
+        if(empty($_POST['rowCount'])){
+        $_POST['rowCount']=1;
+    }
+} else {
 $videos = Video::getAllVideos('', $showOnlyLoggedUserVideos, true);
 $total = Video::getTotalVideos('', $showOnlyLoggedUserVideos, true);
+}
 foreach ($videos as $key => $value) {
     unset($value['password']);
     unset($value['recoverPass']);
